@@ -9,18 +9,20 @@ function LSx = mtimes(LS,x)
 % we need to assert that x is a vector and that is has the correct size
 assert(size(x,1) == LS.n*LS.m )
 
-BExt = zeros(LS.ne,LS.me);
-BExt(1:LS.n,1:LS.m)= reshape(x,LS.n,LS.m);
+% BExt = zeros(LS.ne,LS.me);
+% BExt(1:LS.n,1:LS.m)= reshape(x,LS.n,LS.m);
+% 
+% % Fourier Transform
+% BFft = fftshift(fft2(BExt));
+% % Component-wise multiplication
+% BFft = LS.GFFT.*BFft;
+% % Inverse Fourier Transform
+% BExt = ifft2(ifftshift(BFft));
+% 
+% % multiplication by omega^2
+% B = BExt(1:LS.n, 1:LS.m);
 
-% Fourier Transform
-BFft = fftshift(fft2(BExt));
-% Component-wise multiplication
-BFft = LS.GFFT.*BFft;
-% Inverse Fourier Transform
-BExt = ifft2(ifftshift(BFft));
-
-% multiplication by omega^2
-B = BExt(1:LS.n, 1:LS.m);
+B = apply_Green(LS, x);
 
 LSx = -x + LS.omega^2*LS.nu.*B(:);
 
